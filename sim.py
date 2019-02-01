@@ -3,7 +3,7 @@ import random
 
 
 def new_airs():
-    return random.randint(0, 127)
+    return random.randint(1, 100)
 
 
 def success(chance):
@@ -182,6 +182,7 @@ def complete_expedition():
         airs = new_airs()
         rivalsProgress = 1
         yourProgress = 1
+        actions += 1
 
         if success(completion_chance):
             echosGained += 125
