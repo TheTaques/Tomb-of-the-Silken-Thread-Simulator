@@ -31,11 +31,11 @@ cautiousApproachDifficulty = 50
 boldApproachDifficulty = 100
 buccaneeringApproachDifficulty = 160
 
-# your stats
-# this simulation assumes a minimum watchful of 84 and also having at least 17 supplies at all times during the
-# expedition. it also does not account for stat changes.
-watchful = 300
-persuasive = 250
+# Your stats
+# This simulation assumes a minimum watchful of 84 and also having at least 17 supplies at all times during the
+# expedition, so we can safely simulate "Other Rivals". It also does not account for stat changes.
+watchful = 158+32
+persuasive = 156+2
 use_buccaneering_approach = True
 
 
@@ -151,10 +151,21 @@ def a_sign():
         return False
 
 
-def confront_rival():
+def other_rivals():
+    global crypticCluesUsed, usedSupplies, rivalsProgress
+    # assume the "Other Rivals" check always succeeds
+    crypticCluesUsed += 20
+    usedSupplies += 10
+    rivalsProgress = 1
+
+
+def confront_rival(confronted_rival_already):
     global confrontedRival, rivalsProgress, yourProgress, usedSupplies, stranglingWillowAbsintheUsed,\
         confrontation_chance, nightmares, actions, inklingsOfIdentityGained, crypticCluesUsed
     if rivalsProgress >= 10:
+        if confronted_rival_already:
+            other_rivals()
+            return True
         confrontedRival += 1
         actions += 1
         stranglingWillowAbsintheUsed += 10
@@ -166,10 +177,7 @@ def confront_rival():
         else:
             rivalsProgress += 1
             inklingsOfIdentityGained += 1
-            # assume the "Other Rivals" part always succeeds
-            crypticCluesUsed += 20
-            usedSupplies += 10
-            rivalsProgress = 1
+            other_rivals()
         return True
     else:
         return False
@@ -212,10 +220,10 @@ def do_expedition():
     # add 1 action for starting the expedition
     global actions
     actions += 1
-
+    confronted_rival_already = False
     while True:
-        if confront_rival():
-            pass
+        if confront_rival(confronted_rival_already):
+            confronted_rival_already = True
         elif complete_expedition():
             break
         elif a_sign():
@@ -229,17 +237,17 @@ if __name__ == '__main__':
 
     calc_success_chances()
 
-    from time import time_ns
+    from time import perf_counter_ns
 
     print("Completing {} simulations...".format(simulations))
-    startTime = time_ns()
+    startTime = perf_counter_ns()
 
     for x in range(0, simulations):
         do_expedition()
 
-    endTime = time_ns()
+    endTime = perf_counter_ns()
     elapsedTime = endTime - startTime
-    print("Done after {} s\n".format(elapsedTime / 1000000000))
+    print("Done after {0:.4f} seconds\n".format(elapsedTime / 1000000000))
 
     print("Total echos gained: {}".format(echosGained))
     print("Total actions used: {}".format(actions))
