@@ -36,6 +36,7 @@ buccaneeringApproachDifficulty = 160
 # expedition. it also does not account for stat changes.
 watchful = 189
 persuasive = 158
+use_buccaneering_approach = False
 
 
 def calc_success_chances():
@@ -127,9 +128,9 @@ def buccaneering_approach():
 
 
 def play_approach():
-    global yourProgress
+    global yourProgress, use_buccaneering_approach
     if yourProgress < 28:
-        bold_approach()
+        buccaneering_approach() if use_buccaneering_approach else bold_approach()
     elif yourProgress == 28:
         bold_approach()
     elif yourProgress == 29:
