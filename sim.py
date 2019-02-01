@@ -128,12 +128,12 @@ def buccaneering_approach():
 
 
 def play_approach():
-    global yourProgress, use_buccaneering_approach
-    if yourProgress < 28:
+    global yourProgress, use_buccaneering_approach, neededProgress
+    if yourProgress < neededProgress - 2:
         buccaneering_approach() if use_buccaneering_approach else bold_approach()
-    elif yourProgress == 28:
+    elif yourProgress == neededProgress - 2:
         bold_approach()
-    elif yourProgress == 29:
+    elif yourProgress == neededProgress - 1:
         cautious_approach()
     else:
         Exception("Something went wrong...")
