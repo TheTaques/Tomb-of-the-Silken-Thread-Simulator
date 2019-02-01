@@ -34,9 +34,9 @@ buccaneeringApproachDifficulty = 160
 # your stats
 # this simulation assumes a minimum watchful of 84 and also having at least 17 supplies at all times during the
 # expedition. it also does not account for stat changes.
-watchful = 189
-persuasive = 158
-use_buccaneering_approach = False
+watchful = 300
+persuasive = 250
+use_buccaneering_approach = True
 
 
 def calc_success_chances():
@@ -166,7 +166,7 @@ def confront_rival():
         else:
             rivalsProgress += 1
             inklingsOfIdentityGained += 1
-            # we assume the "Other Rivals" part always succeeds
+            # assume the "Other Rivals" part always succeeds
             crypticCluesUsed += 20
             usedSupplies += 10
             rivalsProgress = 1
@@ -229,9 +229,8 @@ if __name__ == '__main__':
     calc_success_chances()
 
     from time import time_ns
-    from datetime import timedelta
 
-    print("Starting to do {} simulations...".format(simulations))
+    print("Completing {} simulations...".format(simulations))
     startTime = time_ns()
 
     for x in range(0, simulations):
@@ -239,12 +238,12 @@ if __name__ == '__main__':
 
     endTime = time_ns()
     elapsedTime = endTime - startTime
-    elapsedTime = timedelta(microseconds=elapsedTime / 1000)
-    print("Done after {}\n".format(elapsedTime))
+    print("Done after {} s\n".format(elapsedTime / 1000000000))
 
     print("Total echos gained: {}".format(echosGained))
     print("Total actions used: {}".format(actions))
     print("EPA: {}\n".format(echosGained / actions))
+    print("EPA after accounting for SWA: {}\n".format((echosGained - 0.5 * stranglingWillowAbsintheUsed) / actions))
 
     print("Total actions: {}".format(actions))
     print("Actions per Expedition: {}\n".format(actions / simulations))
