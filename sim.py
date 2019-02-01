@@ -152,8 +152,9 @@ def a_sign():
 
 
 def other_rivals():
-    global crypticCluesUsed, usedSupplies, rivalsProgress
+    global crypticCluesUsed, usedSupplies, rivalsProgress, actions
     # assume the "Other Rivals" check always succeeds
+    actions += 1
     crypticCluesUsed += 20
     usedSupplies += 10
     rivalsProgress = 1
