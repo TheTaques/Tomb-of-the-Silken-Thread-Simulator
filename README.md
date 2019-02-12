@@ -26,4 +26,4 @@ use_buccaneering_approach = False
 Higher EPA wins!
 
 #### Update:
-According to this script, if your combined watchful is >= 248 you should use "A buccaneering approach"!
+According to this script, if your combined watchful is >= 248 and your persuasive is >= 120 you should use "A buccaneering approach"!
