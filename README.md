@@ -1,5 +1,7 @@
 # Tomb-of-the-Silken-Thread-Simulator
 Simulates going on Expeditions to the "Tomb of the Silken Thread" in [Fallen London](https://www.fallenlondon.com/)
+Needs Python Version 3.7
+
 
 You can use this to check if you should be using "A buccaneering approach" with you current Watchful stat.
 To do so just look for the stats section:
@@ -23,4 +25,5 @@ use_buccaneering_approach = False
 
 Higher EPA wins!
 
-Needs Python Version 3.7
+#### Update:
+According to this script, if your combined watchful is >= 248 you should use "A buccaneering approach"!
