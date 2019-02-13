@@ -30,54 +30,35 @@ fl_difficultyScaler = .6
 cautiousApproachDifficulty = 50
 boldApproachDifficulty = 100
 buccaneeringApproachDifficulty = 160
+completionDifficulty = 60
+confrontationDifficulty = 72
 
 # Your stats
 # This simulation assumes a minimum watchful of 84 and also having at least 17 supplies at all times during the
 # expedition, so we can safely simulate "Other Rivals". It also does not account for stat changes.
-watchful = 158+32
-persuasive = 156+2
-use_buccaneering_approach = True
+watchful = 247
+persuasive = 158+2
+use_buccaneering_approach = False
 
 
-def calc_success_chances():
-    global fl_difficultyScaler, cautiousApproachDifficulty, boldApproachDifficulty, buccaneeringApproachDifficulty, \
-        watchful, cautious_approach_chance, bold_approach_chance, buccaneering_approach_chance, \
-        completion_chance, persuasive, confrontation_chance
-
-    # calculate chances
-    cautious_approach_chance = fl_difficultyScaler * watchful / cautiousApproachDifficulty
-    bold_approach_chance = fl_difficultyScaler * watchful / boldApproachDifficulty
-    buccaneering_approach_chance = fl_difficultyScaler * watchful / buccaneeringApproachDifficulty
-    completion_chance = fl_difficultyScaler * watchful / 60
-    confrontation_chance = fl_difficultyScaler * persuasive / 72
+def calc_chance(difficulty: int, pers: bool = False) -> int:
+    # calculate chance
+    x = persuasive if pers else watchful
+    chance = fl_difficultyScaler * x / difficulty
 
     # convert to "integer chance" and round down
-    cautious_approach_chance = floor(cautious_approach_chance * 100)
-    bold_approach_chance = floor(bold_approach_chance * 100)
-    buccaneering_approach_chance = floor(buccaneering_approach_chance * 100)
-    completion_chance = floor(completion_chance * 100)
-    confrontation_chance = floor(confrontation_chance * 100)
+    chance = floor(chance * 100)
 
     # check if chance is below 1% and set to 1% if it is
-    cautious_approach_chance = cautious_approach_chance if cautious_approach_chance >= 1 else 1
-    bold_approach_chance = bold_approach_chance if bold_approach_chance >= 1 else 1
-    buccaneering_approach_chance = buccaneering_approach_chance if buccaneering_approach_chance >= 1 else 1
-    completion_chance = completion_chance if completion_chance >= 1 else 1
-    confrontation_chance = confrontation_chance if confrontation_chance >= 1 else 1
+    chance = chance if chance >= 1 else 1
 
     # check if chance is above 100% and set to 100% if it is
-    cautious_approach_chance = cautious_approach_chance if cautious_approach_chance <= 100 else 100
-    bold_approach_chance = bold_approach_chance if bold_approach_chance <= 100 else 100
-    buccaneering_approach_chance = buccaneering_approach_chance if buccaneering_approach_chance <= 100 else 100
-    completion_chance = completion_chance if completion_chance <= 100 else 100
-    confrontation_chance = confrontation_chance if confrontation_chance <= 100 else 100
+    chance = chance if chance <= 100 else 100
 
     # convert back to "float chance"
-    cautious_approach_chance /= 100
-    bold_approach_chance /= 100
-    buccaneering_approach_chance /= 100
-    completion_chance /= 100
-    confrontation_chance /= 100
+    chance /= 100
+
+    return chance
 
 
 def cautious_approach():
@@ -234,14 +215,18 @@ def do_expedition():
 
 
 if __name__ == '__main__':
-    simulations = 100000
-
-    calc_success_chances()
+    simulations = 1000000
 
     from time import perf_counter_ns
 
     print("Completing {} simulations...".format(simulations))
     startTime = perf_counter_ns()
+
+    cautious_approach_chance = calc_chance(cautiousApproachDifficulty)
+    bold_approach_chance = calc_chance(boldApproachDifficulty)
+    buccaneering_approach_chance = calc_chance(buccaneeringApproachDifficulty)
+    completion_chance = calc_chance(completionDifficulty)
+    confrontation_chance = calc_chance(confrontationDifficulty, True)
 
     for x in range(0, simulations):
         do_expedition()
