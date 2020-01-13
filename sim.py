@@ -7,7 +7,7 @@ def new_airs():
 
 
 def success(chance):
-    return random.random() < chance
+    return random.random() <= chance
 
 
 # starting values
@@ -36,9 +36,9 @@ confrontationDifficulty = 72
 # Your stats
 # This simulation assumes a minimum watchful of 84 and also having at least 17 supplies at all times during the
 # expedition, so we can safely simulate "Other Rivals". It also does not account for stat changes.
-watchful = 247
-persuasive = 158+2
-use_buccaneering_approach = False
+watchful = 257+10
+persuasive = 201
+use_buccaneering_approach = True
 
 
 def calc_chance(difficulty: int, pers: bool = False) -> int:
